@@ -78,6 +78,7 @@ describe('effect', () => {
   })
 
   it('onStop', () => {
+    // 调用 stop 后的回调函数
     const obj = reactive({ foo: 1 })
     const onStop = jest.fn()
     let dummy
