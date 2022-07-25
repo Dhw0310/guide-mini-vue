@@ -1,5 +1,6 @@
+import { isObject } from "../shared"
 import { track, trigger } from "./effect"
-import { ReactiveFlags } from "./reactive"
+import { reactive, ReactiveFlags, readonly } from "./reactive"
 
 const get = createGetter()
 const set = createSetter()
@@ -14,6 +15,10 @@ function createGetter(isReadonly = false) {
       return isReadonly
     }
 
+    // 看看 res 是不是 object 是的话再调用 reactive 并 return 出去
+    if (isObject(res)) {
+      return isReadonly ? readonly(res) : reactive(res)
+    }
     if (!isReadonly) {
 
       // TODO 收集依赖
