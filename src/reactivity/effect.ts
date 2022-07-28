@@ -51,19 +51,22 @@ export function track(target, key) {
     targetMap.set(target, (depsMap = new Map()))
   }
   // 再根据 key 从 depsMap 中取得 effects，它是一个 Set 类型，里边存储着所有与当前 key 相关联的副作用函数：effect
-  let deps = depsMap.get(key)
-  if (!deps) {
-    deps = new Set()
-    depsMap.set(key, deps)
+  let dep = depsMap.get(key)
+  if (!dep) {
+    dep = new Set()
+    depsMap.set(key, dep)
   }
+  trackEffects(dep)
+}
+export function trackEffects(dep) {
   // 将当前激活的副作用函数添加到 桶 中
   // 如果已经在桶中了，不需要再添加
-  if (deps.has(activeEffect)) return
-  deps.add(activeEffect)
+  if (dep.has(activeEffect)) return
+  dep.add(activeEffect)
   activeEffect.
-    deps.push(deps)
+    deps.push(dep)
 }
-function isTracking() {
+export function isTracking() {
   // 如果没有 activeEffect 直接 ruturn 如果单纯只是 get 操作，不会触发 trigger 所以 activeEffect 为 undefined 
   // if (!activeEffect) return
   // if (!shouldTrack) return
@@ -73,9 +76,11 @@ export function trigger(target, key) {
   // 根据 target 从 桶 中取得 depsMap， 它是 key --> effects
   const depsMap = targetMap.get(target)
   // 根据 key 取得所有副作用函数 effects
-  const deps = depsMap.get(key)
-
-  for (const effect of deps) {
+  const dep = depsMap.get(key)
+  triggerEffects(dep)
+}
+export function triggerEffects(dep) {
+  for (const effect of dep) {
     if (effect.scheduler) {
       effect.scheduler()
     } else {
