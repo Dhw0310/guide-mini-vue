@@ -3,7 +3,7 @@ import { extend } from "../shared";
 // 用一个全局变量存储被注册的effect副作用函数
 let activeEffect;
 let shouldTrack;
-class ReactiveEffect {
+export class ReactiveEffect {
   private _fn: any;
   deps = [];
   active = true
