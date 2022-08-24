@@ -6,9 +6,23 @@ export function render(vnode, container) {
 }
 function patch(vnode: any, container: any) {
   // 去处理组件
-
-  processComponent(vnode, container)
+  // TODO 判断vnode 是不是一个 element
+  // 是 element 那么就应该处理 element
+  // 思考题： 如何去区分是 element 还是 component 类型呢？
+  // console.log(vnode)
+  // element 是 type 为 string 类似于 div
+  // component 是 type 为 object
+  if (typeof vnode.type === 'string') {
+    processElement(vnode, container);
+  } else {
+    processComponent(vnode, container)
+  }
 }
+
+function processElement(vnode: any, container: any) {
+  
+}
+
 function processComponent(vnode: any, container: any) {
   mountComponent(vnode, container)
 }

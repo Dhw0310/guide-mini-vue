@@ -59,3 +59,14 @@ export function proxyRefs(objectWithRefs) {
     }
   })
 }
+
+
+// let objA= { a:1,b:'xx'} as any
+// type objB= { c:1,b:'xx'}
+// objA as objB
+
+// let objA= { a:1,b:'xx'} as any
+// let a = objA as {c:1,b:'xx'}
+
+// let objA= { a:1,b:'xx', c: 2}
+// let a = objA as {c:1,b:'xx'}

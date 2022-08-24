@@ -1,3 +1,0 @@
-
-
-createApp(App).mount('#app')
