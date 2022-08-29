@@ -13,6 +13,7 @@ function patch(vnode: any, container: any) {
   // element 是 type 为 string 类似于 div
   // component 是 type 为 object
   if (typeof vnode.type === 'string') {
+    debugger
     processElement(vnode, container);
   } else {
     processComponent(vnode, container)
@@ -20,7 +21,30 @@ function patch(vnode: any, container: any) {
 }
 
 function processElement(vnode: any, container: any) {
-  
+  mountElement(vnode, container)
+}
+
+function mountElement(vnode, container) {
+  const el = document.createElement(vnode.type)
+  const { children } = vnode
+  if (typeof children === 'string') {
+    el.textContent = children
+  } else if (Array.isArray(children)) {
+    mountChildren(vnode, el)
+  }
+
+  const props = vnode.props
+  for (const prop of props) {
+    const val = props[prop]
+    el.setAttribute(prop, val)
+  }
+  container.appendChild(el)
+}
+
+function mountChildren(vnode: any, container: any) {
+  vnode.children.forEach(v => {
+    patch(v, container)
+  })
 }
 
 function processComponent(vnode: any, container: any) {

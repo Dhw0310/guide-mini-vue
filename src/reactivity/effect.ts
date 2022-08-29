@@ -1,4 +1,4 @@
-import { extend } from "../shared";
+import { extend } from "../shared/index";
 
 // 用一个全局变量存储被注册的effect副作用函数
 let activeEffect;
