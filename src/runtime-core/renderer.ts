@@ -1,3 +1,4 @@
+import { isObject } from "../shared/index";
 import { createComponentInstance, setupComponent } from "./component"
 
 export function render(vnode, container) {
@@ -13,9 +14,9 @@ function patch(vnode: any, container: any) {
   // element 是 type 为 string 类似于 div
   // component 是 type 为 object
   if (typeof vnode.type === 'string') {
-    debugger
+    // debugger
     processElement(vnode, container);
-  } else {
+  } else if (isObject(vnode.type)) {
     processComponent(vnode, container)
   }
 }
@@ -25,7 +26,8 @@ function processElement(vnode: any, container: any) {
 }
 
 function mountElement(vnode, container) {
-  const el = document.createElement(vnode.type)
+  // vnode 是 element 即是 div
+  const el = (vnode.el = document.createElement(vnode.type))
   const { children } = vnode
   if (typeof children === 'string') {
     el.textContent = children
@@ -50,18 +52,23 @@ function mountChildren(vnode: any, container: any) {
 function processComponent(vnode: any, container: any) {
   mountComponent(vnode, container)
 }
-function mountComponent(vnode: any, container: any) {
+function mountComponent(initialVNode: any, container: any) {
   // 创建组件实例
-  const instance = createComponentInstance(vnode)
+  const instance = createComponentInstance(initialVNode)
 
   setupComponent(instance)
 
-  setupRenderEffect(instance, container)
+  setupRenderEffect(instance, initialVNode, container)
 }
 
-function setupRenderEffect(instance: any, container: any) {
-  const subTree = instance.render()
+function setupRenderEffect(instance: any, initialVNode, container: any) {
+  const { proxy } = instance
+  const subTree = instance.render.call(proxy)
   // vnode -> patch
   // vnode -> element -> mountElement
   patch(subTree, container)
+  console.log(subTree)
+
+  // element -> vnode
+  initialVNode.el = subTree.el
 }
