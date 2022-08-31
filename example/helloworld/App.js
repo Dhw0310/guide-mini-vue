@@ -10,6 +10,9 @@ export const App = {
       {
         id: "root",
         class: ["red", "hard"],
+        onClick () {
+          console.log('click')
+        }
       },
       // this.$el -> get root element
       'hi,' + this.msg
