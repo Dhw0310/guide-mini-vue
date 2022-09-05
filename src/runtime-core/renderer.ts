@@ -81,7 +81,7 @@ function setupRenderEffect(instance: any, initialVNode, container: any) {
   // vnode -> patch
   // vnode -> element -> mountElement
   patch(subTree, container)
-  console.log(subTree)
+  // console.log(subTree)
 
   // element -> vnode
   initialVNode.el = subTree.el

@@ -1,10 +1,11 @@
 import { h } from '../../lib/guide-mini-vue.esm.js'
+import { Foo } from './Foo.js'
 window.self = null
 export const App = {
-  // render
+  name: 'App',
+  // 必须要写 render
   render () {
     window.self = this
-    console.log(this)
     // return h('div', 'hi,' + this.msg)
     return h('div',
       {
@@ -15,7 +16,13 @@ export const App = {
         }
       },
       // this.$el -> get root element
-      'hi,' + this.msg
+      // 'hi,' + this.msg
+      [
+        h("div", {}, "hi," + this.msg),
+        h(Foo, {
+          count: 1,
+        }),
+      ]
     )
     // return h('div',
     //   {
