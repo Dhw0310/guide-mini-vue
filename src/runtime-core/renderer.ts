@@ -42,6 +42,12 @@ function mountElement(vnode, container) {
     // ARRAY_CHILDREN
     mountChildren(vnode, el)
   }
+  // 组件 + children类型是 object
+  if(shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
+    if(typeof children === 'object') {
+      vnode.shapeFlag |= ShapeFlags.SLOT_CHILDREN
+    }
+  }
 
   const props = vnode.props
   for (const key in props) {
